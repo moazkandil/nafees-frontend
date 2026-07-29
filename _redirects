@@ -1,0 +1,8 @@
+/shop      /shop.html      200
+/about     /about.html     200
+/contact   /contact.html   200
+/cart      /cart.html      200
+/checkout  /checkout.html  200
+/wishlist  /wishlist.html  200
+/admin     /Admin/login.html  302
+/*         /404.html       404

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /Admin/
+
+Sitemap: https://friendly-marzipan-650aef.netlify.app/sitemap.xml

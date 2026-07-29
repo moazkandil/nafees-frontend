@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete your NAFEES Cash on Delivery order securely.">
+  <link rel="canonical" href="https://friendly-marzipan-650aef.netlify.app/checkout.html">
+  <title>Checkout | NAFEES</title>
+  <link rel="icon" href="Images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/responsive.css">
+  <script defer src="JS/site-config.js"></script>
+  <script defer src="JS/products.js"></script>
+  <script defer src="JS/app.js"></script>
+</head>
+<body>
+  <header id="site-header" class="site-header inner"></header>
+  <main id="main">
+    <section class="section page-top">
+      <div class="container">
+        <div class="section-head">
+          <div><div class="eyebrow">Secure checkout</div><h1 class="page-title" data-i18n="checkout">Checkout</h1></div>
+          <div class="rating">Cash on Delivery</div>
+        </div>
+        <div class="checkout-layout">
+          <form id="checkout-form" class="form-card" novalidate>
+            <h2>Delivery details</h2>
+            <div class="field-grid">
+              <div class="field full"><label for="full-name">Full name</label><input id="full-name" name="fullName" required autocomplete="name"><small class="field-error" data-error-for="fullName"></small></div>
+              <div class="field"><label for="checkout-phone">Egyptian phone number</label><input id="checkout-phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX"><small class="field-error" data-error-for="phone"></small></div>
+              <div class="field"><label for="checkout-email">Email</label><input id="checkout-email" name="email" type="email" required autocomplete="email"><small class="field-error" data-error-for="email"></small></div>
+              <div class="field"><label for="governorate">Governorate</label><select id="governorate" name="governorate" required><option value="">Select governorate</option><option>Cairo</option><option>Giza</option><option>Alexandria</option><option>Qalyubia</option><option>Other</option></select><small class="field-error" data-error-for="governorate"></small></div>
+              <div class="field"><label for="city">City / area</label><input id="city" name="city" required autocomplete="address-level2"><small class="field-error" data-error-for="city"></small></div>
+              <div class="field full"><label for="address">Full address</label><textarea id="address" name="address" required autocomplete="street-address" placeholder="Building, street, floor and apartment"></textarea><small class="field-error" data-error-for="address"></small></div>
+              <div class="field full"><label for="notes">Order notes <span class="muted">(optional)</span></label><textarea id="notes" name="notes" placeholder="Anything the delivery team should know"></textarea></div>
+            </div>
+            <h2 class="form-subheading">Payment method</h2>
+            <div class="payment-options">
+              <label class="payment-option"><input type="radio" name="payment" value="cod" checked> <span><b>Cash on Delivery</b><small>Pay in cash when your order arrives.</small></span></label>
+            </div>
+            <p class="form-status" id="checkout-status" role="status"></p>
+            <button class="button full-button" type="submit">Place Cash on Delivery order</button>
+          </form>
+          <aside class="summary" id="checkout-summary"></aside>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shop the complete NAFEES luxury perfume collection in Egypt.">
+  <link rel="canonical" href="https://friendly-marzipan-650aef.netlify.app/shop.html">
+  <title>Shop Luxury Perfumes | NAFEES</title>
+  <link rel="icon" href="Images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="CSS/style.css"><link rel="stylesheet" href="CSS/responsive.css">
+  <script defer src="JS/site-config.js"></script><script defer src="JS/products.js"></script><script defer src="JS/app.js"></script>
+</head>
+<body>
+  <header id="site-header" class="site-header inner"></header>
+  <main id="main">
+    <section class="page-hero"><div class="container"><div class="breadcrumb">Home / Shop</div><h1>The collection</h1><p>Compositions with character, selected for the way they stay with you.</p></div></section>
+    <section class="section"><div class="container shop-layout">
+      <aside class="filters" aria-label="Product filters">
+        <h2 data-i18n="filters">Refine your selection</h2>
+        <div class="filter-group"><b>For</b><label><input type="checkbox" data-shop-filter data-filter-gender value="Men"> Men</label><label><input type="checkbox" data-shop-filter data-filter-gender value="Women"> Women</label><label><input type="checkbox" data-shop-filter data-filter-gender value="Unisex"> Unisex</label></div>
+        <div class="filter-group"><b>Type</b><label><input type="checkbox" data-shop-filter data-filter-type value="Extrait de Parfum"> Extrait de Parfum</label><label><input type="checkbox" data-shop-filter data-filter-type value="Eau de Parfum"> Eau de Parfum</label><label><input type="checkbox" data-shop-filter data-filter-type value="Eau de Toilette"> Eau de Toilette</label></div>
+        <div class="filter-group"><b>Collections</b><label><input type="checkbox" id="filter-best" data-shop-filter> Best sellers</label><label><input type="checkbox" id="filter-new" data-shop-filter> New arrivals</label><label><input type="checkbox" id="filter-sale" data-shop-filter> Offers</label></div>
+        <div class="filter-group"><label for="shop-price">Maximum price <output id="shop-price-output">EGP 4,000</output></label><input class="range" id="shop-price" data-shop-filter type="range" min="1000" max="4000" value="4000" step="50"></div>
+        <button class="text-link reset-button" id="reset-filters" type="button" data-i18n="reset">Reset filters</button>
+      </aside>
+      <div>
+        <div class="toolbar"><p id="result-count" aria-live="polite">12 fragrances found</p><label class="search-field"><span class="sr-only">Search collection</span><input id="shop-search" data-shop-filter type="search" placeholder="Search collection"><span>&#128269;</span></label><label class="select-label"><span class="sr-only">Sort products</span><select class="select" id="shop-sort" data-shop-filter><option value="featured">Featured</option><option value="price-low">Price: low to high</option><option value="price-high">Price: high to low</option><option value="rating">Rating</option><option value="newest">Newest</option></select></label></div>
+        <div class="product-grid" id="catalog" aria-live="polite"></div>
+      </div>
+    </div></section>
+  </main>
+  <footer id="site-footer"></footer>
+</body>
+</html>

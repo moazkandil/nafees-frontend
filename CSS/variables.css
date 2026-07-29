@@ -1,0 +1,13 @@
+:root {
+  --ink: #070707;
+  --ink-soft: #10100f;
+  --panel: rgba(20, 20, 18, .72);
+  --gold: #d4af37;
+  --gold-light: #f4d977;
+  --cream: #f7f2e8;
+  --muted: #b8b5ae;
+  --line: rgba(212, 175, 55, .24);
+  --shadow: 0 24px 80px rgba(0,0,0,.48);
+  --radius: 20px;
+  --content: min(1180px, calc(100% - 48px));
+}
