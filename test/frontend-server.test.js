@@ -69,3 +69,9 @@ test('offers page is a focused discounted-product catalogue', async () => {
   assert.doesNotMatch(html, /class="offer-card"/);
   assert.doesNotMatch(html, /discovery set/i);
 });
+
+test('mobile navigation keeps cart outside the menu', () => {
+  const css = require('fs').readFileSync(require('path').join(__dirname, '..', 'CSS', 'responsive.css'), 'utf8');
+  assert.doesNotMatch(css, /\.nav-actions a\[href="cart\.html"\]\s*\{\s*display:\s*none/);
+  assert.match(css, /\.nav-links \.mobile-only-link\[href="cart\.html"\]\s*\{\s*display:\s*none/);
+});

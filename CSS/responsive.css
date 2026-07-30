@@ -15,8 +15,8 @@
 @media (max-width: 600px) {
   .nav-actions .icon-button:first-child,
   .nav-actions .icon-button:nth-child(2) { display: grid; }
-  .nav-actions a[href="wishlist.html"],
-  .nav-actions a[href="cart.html"] { display: none; }
+  .nav-actions a[href="wishlist.html"] { display: none; }
+  .nav-links .mobile-only-link[href="cart.html"] { display: none; }
   .nav-actions .menu-button { display: grid; }
   .nav { gap: 8px; }
   .logo { font-size: 20px; letter-spacing: .1em; }
