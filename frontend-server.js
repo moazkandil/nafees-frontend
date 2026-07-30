@@ -38,7 +38,7 @@ function headersFor(file) {
   return {
     'Cache-Control': immutable
       ? 'public, max-age=2592000'
-      : extension === '.html'
+      : extension === '.html' || extension === '.js' || extension === '.css'
         ? 'no-cache'
         : 'public, max-age=3600, must-revalidate',
     'Content-Security-Policy': [

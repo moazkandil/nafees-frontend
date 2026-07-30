@@ -2,6 +2,7 @@
 @import url('variables.css');
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; background: var(--ink); }
 body { margin: 0; min-width: 320px; background: var(--ink); color: var(--cream); font: 400 15px/1.65 'DM Sans', sans-serif; overflow-wrap: break-word; }
 body.no-scroll { overflow: hidden; }

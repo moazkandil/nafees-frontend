@@ -54,3 +54,10 @@ test('loads the API client before storefront application code', async () => {
     assert.ok(apiClient < application, `${route} loads the API client first`);
   }
 });
+
+test('account forms never expose credentials in a query string fallback', async () => {
+  const html = await (await fetch(`${base}/account`)).text();
+  assert.match(html, /id="customer-login"[^>]+method="post"/);
+  assert.match(html, /id="customer-register"[^>]+method="post"/);
+  assert.match(html, /JS\/api-client\.js\?v=/);
+});
