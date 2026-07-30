@@ -60,4 +60,5 @@ test('account forms never expose credentials in a query string fallback', async 
   assert.match(html, /id="customer-login"[^>]+method="post"/);
   assert.match(html, /id="customer-register"[^>]+method="post"/);
   assert.match(html, /JS\/api-client\.js\?v=/);
+  assert.match(html, /CSS\/style\.css\?v=/);
 });

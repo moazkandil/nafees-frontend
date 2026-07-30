@@ -1193,7 +1193,9 @@
       var user = results[0].user || results[0].data || results[0];
       var orders = results[1].orders || results[1].data || [];
       authPanel.hidden = true;
+      authPanel.style.display = 'none';
       profilePanel.hidden = false;
+      profilePanel.style.display = '';
       var name = document.getElementById('account-name');
       var email = document.getElementById('account-email');
       if (name) name.textContent = user.name || 'Customer';
@@ -1211,7 +1213,9 @@
     } catch (error) {
       localStorage.removeItem('nafeesToken');
       authPanel.hidden = false;
+      authPanel.style.display = '';
       profilePanel.hidden = true;
+      profilePanel.style.display = 'none';
       return false;
     }
   }
