@@ -44,3 +44,13 @@ test('rejects unsupported methods without processing form data', async () => {
   assert.equal(response.status, 405);
   assert.equal(response.headers.get('allow'), 'GET, HEAD');
 });
+
+test('loads the API client before storefront application code', async () => {
+  for (const route of ['/', '/shop', '/contact', '/checkout', '/account']) {
+    const html = await (await fetch(`${base}${route}`)).text();
+    const apiClient = html.indexOf('JS/api-client.js');
+    const application = html.indexOf('JS/app.js');
+    assert.ok(apiClient >= 0, `${route} includes the API client`);
+    assert.ok(apiClient < application, `${route} loads the API client first`);
+  }
+});
