@@ -6,6 +6,7 @@
   var products = [];
   var categories = [];
   var orders = [];
+  var messages = [];
 
   function esc(value) {
     var div = document.createElement('div');
@@ -96,7 +97,11 @@
     await api('/products' + (id ? '/' + id : ''), { method: id ? 'PATCH' : 'POST', body: body });
     await loadCatalog(); renderProducts(); fillProduct(null); notice('Product saved successfully.');
   }
-  async function loadOrders() { orders = (await api('/orders')).orders || []; renderOrders(); }
+  async function loadOrders() { orders = (await api('/orders?limit=100')).orders || []; renderOrders(); }
+  async function loadMessages() {
+    messages = (await api('/contact?limit=100')).messages || [];
+    renderMessages();
+  }
   function renderOrders() {
     var target = document.getElementById('admin-order-rows');
     if (!target) return;
@@ -128,6 +133,27 @@
     orders.forEach(function (o) { var key = o.customer.email; if (!map[key]) map[key] = { customer: o.customer, count: 0, spent: 0 }; map[key].count++; map[key].spent += o.total; });
     target.innerHTML = Object.values(map).map(function (x) { return '<tr><td><b>' + esc(x.customer.fullName) + '</b></td><td>' + esc(x.customer.phone) + '</td><td>' + esc(x.customer.email) + '</td><td>' + x.count + '</td><td>' + money(x.spent) + '</td></tr>'; }).join('') || '<tr><td colspan="5">No customers yet.</td></tr>';
   }
+  function renderMessages() {
+    var target = document.getElementById('admin-message-rows');
+    if (!target) return;
+    var query = ((document.getElementById('admin-message-search') || {}).value || '').toLowerCase();
+    var status = (document.getElementById('admin-message-status') || {}).value || '';
+    var list = messages.filter(function (message) {
+      var haystack = [message.name, message.email, message.phone, message.subject, message.message].join(' ').toLowerCase();
+      return (!query || haystack.includes(query)) && (!status || message.status === status);
+    });
+    target.innerHTML = list.map(function (message) {
+      var statuses = ['New', 'Read', 'Replied', 'Archived'].map(function (value) {
+        return '<option' + (message.status === value ? ' selected' : '') + '>' + value + '</option>';
+      }).join('');
+      return '<tr><td><b>' + esc(message.name) + '</b><br><small>' + esc(message.email) + '<br>' + esc(message.phone) +
+        '</small></td><td><b>' + esc(message.subject) + '</b><br><small>' + esc(message.message) +
+        '</small></td><td>' + new Date(message.createdAt).toLocaleString('en-EG') +
+        '</td><td><select class="admin-select status-select" data-message-status data-id="' + message._id + '">' + statuses +
+        '</select></td><td><button class="admin-btn ghost danger" data-admin-action="delete-message" data-id="' +
+        message._id + '">Delete</button></td></tr>';
+    }).join('') || '<tr><td colspan="5">No messages found.</td></tr>';
+  }
   function bind() {
     document.addEventListener('click', async function (event) {
       var action = event.target.closest('[data-admin-action]');
@@ -139,12 +165,26 @@
         if (action.dataset.adminAction === 'delete-product' && confirm('Delete this product permanently?')) {
           await api('/products/' + action.dataset.id, { method: 'DELETE' }); await loadCatalog(); renderProducts(); notice('Product deleted.');
         }
+        if (action.dataset.adminAction === 'delete-message' && confirm('Delete this contact message permanently?')) {
+          await api('/contact/' + action.dataset.id, { method: 'DELETE' });
+          await loadMessages();
+          notice('Message deleted.');
+        }
       } catch (error) { notice(error.message); }
     });
     document.addEventListener('change', async function (event) {
       if (event.target.matches('[data-order-status]')) {
         try { await api('/orders/' + event.target.dataset.id, { method: 'PATCH', body: { status: event.target.value } }); notice('Order updated.'); }
-        catch (error) { notice(error.message); }
+        catch (error) { notice(error.message); await loadOrders(); }
+      }
+      if (event.target.matches('[data-message-status]')) {
+        try {
+          await api('/contact/' + event.target.dataset.id, { method: 'PATCH', body: { status: event.target.value } });
+          notice('Message status updated.');
+        } catch (error) {
+          notice(error.message);
+          await loadMessages();
+        }
       }
     });
     var productForm = document.getElementById('admin-product-form');
@@ -152,6 +192,8 @@
     var ps = document.getElementById('admin-product-search'); if (ps) ps.addEventListener('input', renderProducts);
     var os = document.getElementById('admin-order-search'); if (os) os.addEventListener('input', renderOrders);
     var sf = document.getElementById('admin-order-status'); if (sf) sf.addEventListener('change', renderOrders);
+    var ms = document.getElementById('admin-message-search'); if (ms) ms.addEventListener('input', renderMessages);
+    var mf = document.getElementById('admin-message-status'); if (mf) mf.addEventListener('change', renderMessages);
   }
   function setupLogin() {
     var form = document.getElementById('admin-login');
@@ -171,6 +213,7 @@
     try {
       if (document.getElementById('admin-product-rows')) { await loadCatalog(); renderProducts(); }
       if (document.getElementById('admin-order-rows') || document.getElementById('admin-customer-rows')) { await loadOrders(); renderCustomers(); }
+      if (document.getElementById('admin-message-rows')) await loadMessages();
       await renderDashboard();
     } catch (error) { notice(error.message); }
   }

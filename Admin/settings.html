@@ -1,2 +1,33 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Settings | NAFEES Admin</title><link rel="stylesheet" href="admin.css"><script defer src="../JS/site-config.js"></script><script defer src="../JS/products.js"></script><script defer src="admin.js"></script></head><body><div class="admin-shell"><aside id="admin-sidebar" class="sidebar"></aside><main class="admin-main"><header id="admin-top" class="admin-top" data-title="Settings" data-description="Editable store constants live in JS/site-config.js."></header><section class="admin-card settings-card"><h2>Static-site configuration</h2><p>Edit <b>JS/site-config.js</b> to change the production domain, WhatsApp number, social URLs, delivery fee, free-delivery threshold, contact details, and demo admin credentials.</p><ul class="settings-list"><li>Domain: https://friendly-marzipan-650aef.netlify.app</li><li>Currency: EGP</li><li>Delivery: 75 EGP below the configured free-delivery threshold</li><li>Admin data: browser session only</li></ul><p class="admin-warning">Do not place payment keys, private API keys, or real passwords in this static project.</p></section></main></div></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Settings | NAFEES Admin</title>
+  <link rel="stylesheet" href="admin.css">
+  <script defer src="../JS/site-config.js"></script>
+  <script defer src="../JS/products.js"></script>
+  <script defer src="admin.js"></script>
+</head>
+<body>
+  <div class="admin-shell">
+    <aside id="admin-sidebar" class="sidebar"></aside>
+    <main class="admin-main">
+      <header id="admin-top" class="admin-top" data-title="Settings" data-description="Current production configuration."></header>
+      <section class="admin-card settings-card">
+        <h2>Production configuration</h2>
+        <p>Public contact and storefront settings are stored in <b>JS/site-config.js</b>. Private values are stored only as Railway environment variables.</p>
+        <ul class="settings-list">
+          <li>Storefront: https://nafees-frontend-production.up.railway.app</li>
+          <li>API: https://nafees-backend-production.up.railway.app/api</li>
+          <li>Currency: EGP</li>
+          <li>Payment: Cash on Delivery only</li>
+          <li>Admin data: protected API and MongoDB</li>
+        </ul>
+        <p class="admin-warning">Never place database URLs, JWT secrets, or administrator passwords in frontend files.</p>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

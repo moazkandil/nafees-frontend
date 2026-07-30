@@ -201,6 +201,13 @@ p { color: var(--muted); }
 .success-card h1 { max-width:none; font-size:clamp(50px,7vw,78px); }
 .success-card p { max-width:520px; margin:22px auto 30px; }
 .success-card .hero-actions { justify-content:center; }
+.account-auth { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.account-auth .field { margin-bottom:14px; }
+.account-profile { display:grid; gap:20px; }
+.account-heading { display:flex; align-items:center; justify-content:space-between; gap:20px; }
+.account-orders { display:grid; gap:12px; }
+.account-order { display:flex; justify-content:space-between; gap:20px; padding:15px 0; border-bottom:1px solid var(--line); }
+.account-order:last-child { border-bottom:0; }
 .legal-content { max-width:850px; }
 .legal-content h1 { font-size:clamp(54px,7vw,82px); }
 .legal-content h2 { font-size:35px; margin-top:42px; }

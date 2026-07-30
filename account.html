@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Sign in to your NAFEES account and review your orders.">
+  <meta name="robots" content="noindex">
+  <link rel="canonical" href="https://nafees-frontend-production.up.railway.app/account.html">
+  <title>My Account | NAFEES</title>
+  <link rel="icon" href="Images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/responsive.css">
+  <script defer src="JS/site-config.js"></script>
+  <script defer src="JS/products.js"></script>
+  <script defer src="JS/app.js"></script>
+</head>
+<body>
+  <header id="site-header" class="site-header inner"></header>
+  <main id="main">
+    <section class="section page-top">
+      <div class="container">
+        <div class="section-head"><div><div class="eyebrow">Private client area</div><h1 class="page-title">My account</h1></div></div>
+        <p class="form-status" id="account-status" role="status" aria-live="polite"></p>
+        <div class="account-auth" id="account-auth">
+          <form class="form-card" id="customer-login" novalidate>
+            <h2>Sign in</h2>
+            <div class="field"><label for="login-email">Email</label><input id="login-email" name="email" type="email" required maxlength="254" autocomplete="email"></div>
+            <div class="field"><label for="login-password">Password</label><input id="login-password" name="password" type="password" required minlength="8" maxlength="128" autocomplete="current-password"></div>
+            <button class="button full-button" type="submit">Sign in</button>
+          </form>
+          <form class="form-card" id="customer-register" novalidate>
+            <h2>Create account</h2>
+            <div class="field"><label for="register-name">Name</label><input id="register-name" name="name" required minlength="2" maxlength="80" autocomplete="name"></div>
+            <div class="field"><label for="register-email">Email</label><input id="register-email" name="email" type="email" required maxlength="254" autocomplete="email"></div>
+            <div class="field"><label for="register-password">Password</label><input id="register-password" name="password" type="password" required minlength="8" maxlength="128" autocomplete="new-password"></div>
+            <button class="button full-button" type="submit">Create account</button>
+          </form>
+        </div>
+        <section class="account-profile" id="account-profile" hidden>
+          <div class="form-card account-heading">
+            <div><div class="eyebrow">Welcome back</div><h2 id="account-name"></h2><p id="account-email"></p></div>
+            <button class="button ghost" type="button" data-action="customer-logout">Sign out</button>
+          </div>
+          <div class="form-card">
+            <h2>Your orders</h2>
+            <div id="account-orders" class="account-orders" aria-live="polite"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+</body>
+</html>

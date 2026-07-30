@@ -4,6 +4,10 @@
   .mobile-only-link { display:block; }
   .nav-links.open { display:flex; }.nav-links a{padding:12px 0}.menu-button{display:grid}.product-grid{grid-template-columns:repeat(2,1fr)}.split,.detail-grid,.contact-grid{grid-template-columns:1fr;gap:30px}.detail-gallery{position:static}.detail-main{height:480px}.cart-layout,.checkout-layout{grid-template-columns:1fr}.summary{position:static}.shop-layout{grid-template-columns:1fr}.filters{position:static;display:grid;grid-template-columns:repeat(3,1fr);gap:0}.filters h2{grid-column:1/-1}.filter-group{padding:12px}.footer-grid{grid-template-columns:repeat(2,1fr)}.promise-grid{grid-template-columns:repeat(2,1fr)}.quick-view{grid-template-columns:150px 1fr}
 }
+@media (max-width: 700px) {
+  .account-auth { grid-template-columns:1fr; }
+  .account-heading, .account-order { align-items:flex-start; flex-direction:column; }
+}
 @media (max-width: 600px) {
   .card-actions .button[data-action="quick-view"] { display: none; }
   .card-actions .button[data-action="move-to-cart"] { display: inline-flex; }

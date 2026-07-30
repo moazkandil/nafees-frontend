@@ -1,0 +1,14 @@
+{
+  "name": "nafees-perfumes-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Production static server for the NAFEES Perfumes storefront",
+  "scripts": {
+    "start": "node frontend-server.js",
+    "check": "node --check frontend-server.js && node --check JS/app.js && node --check Admin/admin.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

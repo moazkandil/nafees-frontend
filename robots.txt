@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /Admin/
 
-Sitemap: https://friendly-marzipan-650aef.netlify.app/sitemap.xml
+Sitemap: https://nafees-frontend-production.up.railway.app/sitemap.xml

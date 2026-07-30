@@ -1,0 +1,8 @@
+.git
+.agents
+.codex
+backend/.env
+backend/node_modules
+backend/*.log
+node_modules
+*.log

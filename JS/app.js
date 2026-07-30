@@ -324,6 +324,12 @@
     return String(value || '').replace(/[<>]/g, '').replace(/\s+/g, ' ').trim();
   }
 
+  function whatsappUrl() {
+    var number = String(config.whatsappNumber || '').replace(/\D/g, '');
+    var message = String(config.whatsappMessage || '').trim();
+    return 'https://wa.me/' + number + (message ? '?text=' + encodeURIComponent(message) : '');
+  }
+
   function readJSON(key, fallback) {
     try {
       var parsed = JSON.parse(localStorage.getItem(key));
@@ -424,6 +430,7 @@
   function saveCart(cart) {
     writeJSON(KEYS.cart, cart);
     updateCartCount();
+    syncCustomerCollection('cart', cart);
   }
 
   function getWishlist() {
@@ -436,7 +443,19 @@
   }
 
   function saveWishlist(list) {
-    writeJSON(KEYS.wishlist, Array.from(new Set(list)));
+    var unique = Array.from(new Set(list));
+    writeJSON(KEYS.wishlist, unique);
+    syncCustomerCollection('wishlist', unique);
+  }
+
+  function syncCustomerCollection(type, items) {
+    if (!localStorage.getItem('nafeesToken')) return;
+    var body = type === 'cart'
+      ? { items: items.map(function (line) { return { product: line.id, quantity: line.quantity }; }) }
+      : { items: items };
+    window.NAFEES_API.request('/users/' + type, { method: 'PUT', body: body }).catch(function (error) {
+      console.warn('Could not synchronize ' + type + ':', error.message);
+    });
   }
 
   function cartItems() {
@@ -572,7 +591,8 @@
       search: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>',
       heart: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.4 5.4 0 0 0-7.6 0L12 5.8l-1.2-1.2a5.4 5.4 0 0 0-7.6 7.6L12 21l8.8-8.8a5.4 5.4 0 0 0 0-7.6Z"></path></svg>',
       bag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8Z"></path><path d="M9 9V6a3 3 0 0 1 6 0v3"></path></svg>',
-      menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>'
+      menu: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>',
+      user: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 21a7.5 7.5 0 0 1 15 0"></path></svg>'
     };
     return icons[name] || '';
   }
@@ -599,6 +619,7 @@
         '<a class="mobile-only-link" href="wishlist.html">' + esc(t('wishlist')) + '</a><a class="mobile-only-link" href="cart.html">' + esc(t('cart')) + ' <span data-cart-count hidden>0</span></a></div>' +
         '<div class="nav-actions"><button class="icon-button" type="button" data-action="open-search" aria-label="Search" title="Search">' + icon('search') + '</button>' +
         '<button class="icon-button lang-button" type="button" data-action="toggle-language" aria-label="Change language" title="Change language">' + esc(t('language')) + '</button>' +
+        '<a class="icon-button" href="account.html" aria-label="My account" title="My account">' + icon('user') + '</a>' +
         '<a class="icon-button" href="wishlist.html" aria-label="Wishlist" title="Wishlist">' + icon('heart') + '</a>' +
         '<a class="icon-button" href="cart.html" aria-label="Cart" title="Cart">' + icon('bag') + '<span class="counter" data-cart-count hidden>0</span></a>' +
         '<button class="icon-button menu-button" type="button" data-action="toggle-menu" aria-label="Open menu" aria-controls="nav-links" aria-expanded="false">' + icon('menu') + '</button></div></nav>';
@@ -610,8 +631,8 @@
       }).join('');
       footer.innerHTML = '<div class="container footer-grid"><div><a class="logo footer-logo" href="index.html" aria-label="NAFEES home"><img src="Images/logo.jpg" alt="NAFEES Perfumes" width="150" height="150" loading="lazy" decoding="async"></a><p>Quietly confident fragrance, composed for remarkable moments.</p>' + (social ? '<div class="footer-social">' + social + '</div>' : '') + '</div>' +
         '<div><h4>Discover</h4><a href="shop.html" data-i18n="shop">' + esc(t('shop')) + '</a><a href="offers.html" data-i18n="offers">' + esc(t('offers')) + '</a><a href="about.html" data-i18n="about">' + esc(t('about')) + '</a><a href="wishlist.html" data-i18n="wishlist">' + esc(t('wishlist')) + '</a></div>' +
-        '<div><h4>Client services</h4><a href="contact.html" data-i18n="contact">' + esc(t('contact')) + '</a><a href="privacy.html" data-i18n="privacy">' + esc(t('privacy')) + '</a><a href="terms.html" data-i18n="terms">' + esc(t('terms')) + '</a><a href="Admin/login.html">Admin demo</a></div>' +
-        '<div><h4>Contact</h4><a href="mailto:' + esc(config.email || '') + '">' + esc(config.email || '') + '</a><a href="https://wa.me/' + esc(config.whatsappNumber || '') + '" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="tel:+' + esc(config.whatsappNumber || '') + '">' + esc(config.phoneDisplay || '') + '</a></div></div><div class="container copyright"><span>&copy; ' + new Date().getFullYear() + ' NAFEES. All rights reserved.</span><span>Made with intention.</span></div>';
+        '<div><h4>Client services</h4><a href="account.html">My account</a><a href="contact.html" data-i18n="contact">' + esc(t('contact')) + '</a><a href="privacy.html" data-i18n="privacy">' + esc(t('privacy')) + '</a><a href="terms.html" data-i18n="terms">' + esc(t('terms')) + '</a><a href="Admin/login.html">Administrator</a></div>' +
+        '<div><h4>Contact</h4><a href="mailto:' + esc(config.email || '') + '">' + esc(config.email || '') + '</a><a href="' + esc(whatsappUrl()) + '" target="_blank" rel="noopener noreferrer">WhatsApp</a><a href="tel:+' + esc(String(config.whatsappNumber || '').replace(/\D/g, '')) + '">' + esc(config.phoneDisplay || '') + '</a></div></div><div class="container copyright"><span>&copy; ' + new Date().getFullYear() + ' NAFEES. All rights reserved.</span><span>Made with intention.</span></div>';
     }
     if (!document.getElementById('site-modal-root')) {
       var root = document.createElement('div');
@@ -629,7 +650,7 @@
     if (!document.querySelector('.whatsapp-float')) {
       var whatsapp = document.createElement('a');
       whatsapp.className = 'whatsapp-float';
-      whatsapp.href = 'https://wa.me/' + (config.whatsappNumber || '');
+      whatsapp.href = whatsappUrl();
       whatsapp.target = '_blank';
       whatsapp.rel = 'noopener';
       whatsapp.setAttribute('aria-label', 'Chat with NAFEES on WhatsApp');
@@ -853,7 +874,6 @@
       return;
     }
     if (!validateCheckout(form)) return;
-    var payment = 'cod';
     var status = document.getElementById('checkout-status');
     form.dataset.submitting = 'true';
     var submit = form.querySelector('button[type="submit"]');
@@ -868,7 +888,6 @@
         address: cleanText(form.elements.address.value),
         notes: cleanText(form.elements.notes.value)
       },
-      payment: 'Cash on Delivery',
       items: totals.items.map(function (item) {
         return { product: item.product.id, quantity: item.line.quantity };
       }),
@@ -1040,6 +1059,10 @@
         else showToast(url);
       }
       if (type === 'back-top') window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (type === 'customer-logout') {
+        localStorage.removeItem('nafeesToken');
+        location.reload();
+      }
     });
     document.addEventListener('input', function (event) {
       if (event.target.id === 'site-search') renderSearch(event.target.value);
@@ -1086,6 +1109,18 @@
   }
 
   function initContact() {
+    var emailLink = document.getElementById('contact-email-link');
+    var phoneLink = document.getElementById('contact-phone-link');
+    var whatsappLink = document.getElementById('contact-whatsapp-link');
+    if (emailLink) {
+      emailLink.href = 'mailto:' + (config.email || '');
+      emailLink.textContent = config.email || '';
+    }
+    if (phoneLink) {
+      phoneLink.href = 'tel:+' + String(config.whatsappNumber || '').replace(/\D/g, '');
+      phoneLink.textContent = config.phoneDisplay || '';
+    }
+    if (whatsappLink) whatsappLink.href = whatsappUrl();
     var form = document.querySelector('form[name="contact"]');
     if (form) form.addEventListener('submit', async function (event) {
       event.preventDefault();
@@ -1117,6 +1152,114 @@
     }
   }
 
+  function initNewsletter() {
+    var form = document.querySelector('form[name="newsletter"]');
+    if (!form) return;
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      var button = form.querySelector('button[type="submit"]');
+      var status = document.getElementById('newsletter-status');
+      if (button) button.disabled = true;
+      try {
+        var payload = await window.NAFEES_API.request('/newsletter', {
+          method: 'POST',
+          body: { email: cleanText(form.elements.email.value) }
+        });
+        form.reset();
+        if (status) status.textContent = payload.message;
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        if (button) button.disabled = false;
+      }
+    });
+  }
+
+  async function loadCustomerAccount() {
+    var authPanel = document.getElementById('account-auth');
+    var profilePanel = document.getElementById('account-profile');
+    var ordersTarget = document.getElementById('account-orders');
+    var token = localStorage.getItem('nafeesToken');
+    if (!authPanel || !profilePanel || !token) return false;
+    try {
+      var results = await Promise.all([
+        window.NAFEES_API.request('/auth/me'),
+        window.NAFEES_API.request('/orders/mine')
+      ]);
+      var user = results[0].user || results[0].data || results[0];
+      var orders = results[1].orders || results[1].data || [];
+      authPanel.hidden = true;
+      profilePanel.hidden = false;
+      var name = document.getElementById('account-name');
+      var email = document.getElementById('account-email');
+      if (name) name.textContent = user.name || 'Customer';
+      if (email) email.textContent = user.email || '';
+      if (ordersTarget) {
+        ordersTarget.innerHTML = orders.length ? orders.map(function (order) {
+          var reference = order.orderNumber || order._id || '';
+          var date = order.createdAt ? new Date(order.createdAt).toLocaleDateString() : '';
+          return '<article class="account-order"><div><strong>' + esc(reference) + '</strong><span>' + esc(date) +
+            '</span></div><div><span class="status-pill">' + esc(order.status || 'Pending') +
+            '</span><strong>' + money(order.total || 0) + '</strong></div></article>';
+        }).join('') : '<p class="muted">You have not placed any orders yet.</p>';
+      }
+      return true;
+    } catch (error) {
+      localStorage.removeItem('nafeesToken');
+      authPanel.hidden = false;
+      profilePanel.hidden = true;
+      return false;
+    }
+  }
+
+  function initAccount() {
+    var loginForm = document.getElementById('customer-login');
+    var registerForm = document.getElementById('customer-register');
+    if (!loginForm && !registerForm) return;
+    loadCustomerAccount();
+
+    async function authenticate(form, path) {
+      var status = document.getElementById('account-status');
+      var button = form.querySelector('button[type="submit"]');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      if (status) status.textContent = '';
+      if (button) button.disabled = true;
+      try {
+        var body = {
+          email: cleanText(form.elements.email.value),
+          password: form.elements.password.value
+        };
+        if (form.elements.name) body.name = cleanText(form.elements.name.value);
+        var payload = await window.NAFEES_API.request(path, { method: 'POST', body: body });
+        localStorage.setItem('nafeesToken', payload.token);
+        syncCustomerCollection('cart', getCart());
+        syncCustomerCollection('wishlist', getWishlist());
+        await loadCustomerAccount();
+        form.reset();
+      } catch (error) {
+        if (status) status.textContent = error.message;
+      } finally {
+        if (button) button.disabled = false;
+      }
+    }
+
+    if (loginForm) loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      authenticate(loginForm, '/auth/login');
+    });
+    if (registerForm) registerForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      authenticate(registerForm, '/auth/register');
+    });
+  }
+
   async function init() {
     migrateStorage();
     if (window.NAFEES_API) await window.NAFEES_API.loadProducts();
@@ -1134,6 +1277,8 @@
     renderCheckoutSummary();
     renderOrderSuccess();
     initContact();
+    initNewsletter();
+    initAccount();
     translateStaticContent();
     document.documentElement.classList.add('js-ready');
   }
