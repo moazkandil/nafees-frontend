@@ -55,7 +55,7 @@
       total: 'Total', clear: 'Clear cart', emptyCart: 'Your bag is ready for a signature.',
       emptyWishlist: 'Your wishlist is waiting for something extraordinary.', inStock: 'In stock',
       lowStock: 'Only {count} left', outStock: 'Out of stock', close: 'Close', viewAll: 'View all',
-      filters: 'Refine your selection', reset: 'Reset filters', results: '{count} fragrances found',
+      filters: 'Refine your selection', filterButton: 'Filter products', reset: 'Reset filters', results: '{count} fragrances found',
       newsletter: 'Private access, delivered', subscribe: 'Subscribe', contactUs: 'Contact us',
       privacy: 'Privacy', terms: 'Terms', language: 'العربية', orderSuccess: 'Order received',
       backToShop: 'Back to shop', moveToCart: 'Move to cart', share: 'Share',
@@ -70,7 +70,7 @@
       total: '\u0627\u0644\u0625\u062c\u0645\u0627\u0644\u064a', clear: '\u0625\u0641\u0631\u0627\u063a \u0627\u0644\u0633\u0644\u0629', emptyCart: '\u062d\u0642\u064a\u0628\u062a\u0643 \u062c\u0627\u0647\u0632\u0629 \u0644\u0639\u0637\u0631\u0643 \u0627\u0644\u0645\u0645\u064a\u0632.',
       emptyWishlist: '\u0642\u0627\u0626\u0645\u0629 \u0645\u0641\u0636\u0644\u0627\u062a\u0643 \u0628\u0627\u0646\u062a\u0638\u0627\u0631 \u0627\u062e\u062a\u064a\u0627\u0631\u0643.', inStock: '\u0645\u062a\u0648\u0641\u0631',
       lowStock: '\u0645\u062a\u0628\u0642\u064a {count} \u0641\u0642\u0637', outStock: '\u0646\u0641\u062f \u0645\u0646 \u0627\u0644\u0645\u062e\u0632\u0648\u0646', close: '\u0625\u063a\u0644\u0627\u0642', viewAll: '\u0639\u0631\u0636 \u0627\u0644\u0643\u0644',
-      filters: '\u062d\u062f\u062f \u0627\u062e\u062a\u064a\u0627\u0631\u0627\u062a\u0643', reset: '\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u0631\u0634\u062d\u0627\u062a', results: '\u062a\u0645 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 {count} \u0639\u0637\u0631',
+      filters: '\u062d\u062f\u062f \u0627\u062e\u062a\u064a\u0627\u0631\u0627\u062a\u0643', filterButton: '\u062a\u0635\u0641\u064a\u0629 \u0627\u0644\u0645\u0646\u062a\u062c\u0627\u062a', reset: '\u0625\u0639\u0627\u062f\u0629 \u0627\u0644\u0645\u0631\u0634\u062d\u0627\u062a', results: '\u062a\u0645 \u0627\u0644\u0639\u062b\u0648\u0631 \u0639\u0644\u0649 {count} \u0639\u0637\u0631',
       newsletter: '\u0648\u0635\u0648\u0644 \u062e\u0627\u0635 \u064a\u0635\u0644 \u0625\u0644\u064a\u0643', subscribe: '\u0627\u0634\u062a\u0631\u0627\u0643', contactUs: '\u062a\u0648\u0627\u0635\u0644 \u0645\u0639\u0646\u0627',
       privacy: '\u0627\u0644\u062e\u0635\u0648\u0635\u064a\u0629', terms: '\u0627\u0644\u0634\u0631\u0648\u0637', language: 'English', orderSuccess: '\u062a\u0645 \u0627\u0633\u062a\u0644\u0627\u0645 \u0637\u0644\u0628\u0643',
       backToShop: '\u0627\u0644\u0639\u0648\u062f\u0629 \u0644\u0644\u0645\u062a\u062c\u0631', moveToCart: '\u0646\u0642\u0644 \u0625\u0644\u0649 \u0627\u0644\u0633\u0644\u0629', share: '\u0645\u0634\u0627\u0631\u0643\u0629',
@@ -730,6 +730,14 @@
     var catalog = document.getElementById('catalog');
     if (!catalog || catalog.dataset.bound) return;
     catalog.dataset.bound = 'true';
+    var filterToggle = document.getElementById('filter-toggle');
+    var filters = document.getElementById('shop-filters');
+    if (filterToggle && filters) {
+      filterToggle.addEventListener('click', function () {
+        var open = filters.classList.toggle('open');
+        filterToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
     document.querySelectorAll('[data-shop-filter]').forEach(function (input) {
       input.addEventListener('input', renderShop);
       input.addEventListener('change', renderShop);

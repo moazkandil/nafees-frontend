@@ -52,6 +52,7 @@ p { color: var(--muted); }
 .counter { position:absolute; top:1px; right:0; min-width:16px; height:16px; padding:0 4px; display:grid; place-items:center; border-radius:8px; background:var(--gold); color:#000; font:700 9px 'DM Sans'; }
 .menu-button { display:none; }
 .mobile-only-link { display:none; }
+.filter-toggle { display:none; }
 
 .hero { min-height: 760px; height: min(100vh, 900px); display:flex; align-items:center; position:relative; overflow:hidden; background: #050505 url('../Images/hero.jpg') center/cover no-repeat; }
 .hero::before { content:''; position:absolute; inset:0; background:linear-gradient(90deg, rgba(0,0,0,.86) 0%,rgba(0,0,0,.58) 44%,rgba(0,0,0,.06) 82%), linear-gradient(0deg, rgba(7,7,7,.65), transparent 45%); }

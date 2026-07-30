@@ -75,3 +75,9 @@ test('mobile navigation keeps cart outside the menu', () => {
   assert.doesNotMatch(css, /\.nav-actions a\[href="cart\.html"\]\s*\{\s*display:\s*none/);
   assert.match(css, /\.nav-links \.mobile-only-link\[href="cart\.html"\]\s*\{\s*display:\s*none/);
 });
+
+test('shop exposes an accessible collapsible mobile filter', async () => {
+  const html = await (await fetch(`${base}/shop`)).text();
+  assert.match(html, /id="filter-toggle"[^>]+aria-controls="shop-filters"[^>]+aria-expanded="false"/);
+  assert.match(html, /id="shop-filters"/);
+});

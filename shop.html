@@ -5,15 +5,16 @@
   <meta name="description" content="Shop the complete NAFEES luxury perfume collection in Egypt.">
   <link rel="canonical" href="https://nafees-frontend-production.up.railway.app/shop.html">
   <title>Shop Luxury Perfumes | NAFEES</title>
-  <link rel="icon" href="Images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="CSS/style.css"><link rel="stylesheet" href="CSS/responsive.css">
-  <script defer src="JS/site-config.js"></script><script defer src="JS/api-client.js"></script><script defer src="JS/products.js"></script><script defer src="JS/app.js"></script>
+  <link rel="icon" href="Images/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="CSS/style.css"><link rel="stylesheet" href="CSS/responsive.css?v=20260730-8">
+  <script defer src="JS/site-config.js"></script><script defer src="JS/api-client.js"></script><script defer src="JS/products.js"></script><script defer src="JS/app.js?v=20260730-8"></script>
 </head>
 <body>
   <header id="site-header" class="site-header inner"></header>
   <main id="main">
     <section class="page-hero"><div class="container"><div class="breadcrumb">Home / Shop</div><h1>The collection</h1><p>Compositions with character, selected for the way they stay with you.</p></div></section>
     <section class="section"><div class="container shop-layout">
-      <aside class="filters" aria-label="Product filters">
+      <button class="button ghost filter-toggle" id="filter-toggle" type="button" aria-controls="shop-filters" aria-expanded="false" data-i18n="filterButton">Filter products</button>
+      <aside class="filters" id="shop-filters" aria-label="Product filters">
         <h2 data-i18n="filters">Refine your selection</h2>
         <div class="filter-group"><b>For</b><label><input type="checkbox" data-shop-filter data-filter-gender value="Men"> Men</label><label><input type="checkbox" data-shop-filter data-filter-gender value="Women"> Women</label><label><input type="checkbox" data-shop-filter data-filter-gender value="Unisex"> Unisex</label></div>
         <div class="filter-group"><b>Type</b><label><input type="checkbox" data-shop-filter data-filter-type value="Extrait de Parfum"> Extrait de Parfum</label><label><input type="checkbox" data-shop-filter data-filter-type value="Eau de Parfum"> Eau de Parfum</label><label><input type="checkbox" data-shop-filter data-filter-type value="Eau de Toilette"> Eau de Toilette</label></div>
