@@ -62,3 +62,10 @@ test('account forms never expose credentials in a query string fallback', async 
   assert.match(html, /JS\/api-client\.js\?v=/);
   assert.match(html, /CSS\/style\.css\?v=/);
 });
+
+test('offers page is a focused discounted-product catalogue', async () => {
+  const html = await (await fetch(`${base}/offers`)).text();
+  assert.match(html, /id="offer-products"/);
+  assert.doesNotMatch(html, /class="offer-card"/);
+  assert.doesNotMatch(html, /discovery set/i);
+});

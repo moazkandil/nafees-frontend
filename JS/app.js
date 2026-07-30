@@ -691,6 +691,7 @@
     try { localStorage.setItem(KEYS.language, next === 'ar' ? 'ar' : 'en'); } catch (error) {}
     updateLanguage();
     renderHome();
+    renderOffers();
     renderShop();
     renderProductDetails();
     renderCartPage();
@@ -703,6 +704,17 @@
     renderProducts(document.getElementById('home-featured'), allProducts().filter(function (product) { return product.featured; }).slice(0, 4));
     renderProducts(document.getElementById('home-best'), allProducts().filter(function (product) { return product.bestSeller; }).slice(0, 4));
     renderProducts(document.getElementById('home-new'), allProducts().filter(function (product) { return product.newArrival; }).slice(0, 4));
+  }
+
+  function renderOffers() {
+    var target = document.getElementById('offer-products');
+    if (!target) return;
+    var offers = allProducts().filter(function (product) {
+      return product.onSale === true && Number(product.oldPrice) > Number(product.price);
+    });
+    renderProducts(target, offers);
+    var count = document.getElementById('offer-count');
+    if (count) count.textContent = offers.length + (offers.length === 1 ? ' offer available' : ' offers available');
   }
 
   function bindShop() {
@@ -1278,6 +1290,7 @@
     bindShop();
     bindCheckout();
     renderHome();
+    renderOffers();
     renderShop();
     renderProductDetails();
     renderCartPage();
