@@ -911,6 +911,7 @@
     form.dataset.submitting = 'true';
     var submit = form.querySelector('button[type="submit"]');
     if (submit) submit.disabled = true;
+    if (status) status.textContent = language() === 'ar' ? '\u062c\u0627\u0631\u064d \u0625\u0646\u0634\u0627\u0621 \u0637\u0644\u0628\u0643...' : 'Placing your order...';
     var orderRequest = {
       customer: {
         fullName: cleanText(form.elements.fullName.value),
@@ -971,7 +972,7 @@
     var title = document.createElement('h1');
     title.textContent = t('orderSuccess');
     var message = document.createElement('p');
-    message.textContent = order ? 'Thank you, ' + order.customer.fullName + '. Your order ' + order.number + ' has been created. We will confirm it by phone shortly.' : 'Your order details could not be found in this browser.';
+    message.textContent = order ? 'Thank you, ' + order.customer.fullName + '. Your order ' + order.number + ' has been created. A confirmation email is being sent, and we will contact you by phone before delivery.' : 'Your order details could not be found in this browser.';
     var actions = document.createElement('div');
     actions.className = 'hero-actions';
     var shop = document.createElement('a');
