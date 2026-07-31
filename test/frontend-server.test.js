@@ -90,3 +90,11 @@ test('shop exposes an accessible collapsible mobile filter', async () => {
   assert.match(html, /id="filter-toggle"[^>]+aria-controls="shop-filters"[^>]+aria-expanded="false"/);
   assert.match(html, /id="shop-filters"/);
 });
+
+test('admin product edit opens, identifies and focuses the populated editor', () => {
+  const script = require('fs').readFileSync(require('path').join(__dirname, '..', 'Admin', 'admin.js'), 'utf8');
+  assert.match(script, /if \(!product\) throw new Error/);
+  assert.match(script, /form\.scrollIntoView\(/);
+  assert.match(script, /form\.elements\.name\.focus\(/);
+  assert.match(script, /Editing ['"]? \+ product\.name/);
+});

@@ -76,7 +76,7 @@
   }
   function fillProduct(product) {
     var form = document.getElementById('admin-product-form');
-    if (!form) return;
+    if (!form) return false;
     form.reset();
     product = product || {};
     form.elements.productId.value = product._id || '';
@@ -86,6 +86,12 @@
     if (form.elements.category) form.elements.category.value = product.category && product.category._id || categories[0]?._id || '';
     ['featured', 'bestSeller', 'newArrival', 'onSale'].forEach(function (key) { form.elements[key].checked = Boolean(product[key]); });
     form.querySelector('[data-form-title]').textContent = product._id ? 'Edit product' : 'Add product';
+    if (product._id) {
+      notice('Editing ' + product.name + '. Update the fields, then press Save product.');
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.setTimeout(function () { form.elements.name.focus({ preventScroll: true }); }, 350);
+    }
+    return true;
   }
   async function saveProduct(form) {
     var id = form.elements.productId.value;
@@ -161,7 +167,11 @@
       try {
         if (action.dataset.adminAction === 'logout') { sessionStorage.removeItem(tokenKey); location.href = 'login.html'; }
         if (action.dataset.adminAction === 'new-product') fillProduct();
-        if (action.dataset.adminAction === 'edit-product') fillProduct(products.find(function (p) { return p._id === action.dataset.id; }));
+        if (action.dataset.adminAction === 'edit-product') {
+          var product = products.find(function (p) { return p._id === action.dataset.id; });
+          if (!product) throw new Error('This product could not be loaded. Refresh the page and try again.');
+          fillProduct(product);
+        }
         if (action.dataset.adminAction === 'delete-product' && confirm('Delete this product permanently?')) {
           await api('/products/' + action.dataset.id, { method: 'DELETE' }); await loadCatalog(); renderProducts(); notice('Product deleted.');
         }
