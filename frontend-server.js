@@ -13,8 +13,7 @@ const routes = {
   '/cart': 'cart.html',
   '/checkout': 'checkout.html',
   '/wishlist': 'wishlist.html',
-  '/account': 'account.html',
-  '/admin': 'Admin/login.html'
+  '/account': 'account.html'
 };
 const types = {
   '.css': 'text/css; charset=utf-8',
@@ -89,6 +88,15 @@ function createServer() {
   } catch {
     res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('Bad Request');
+    return;
+  }
+  if (pathname === '/admin') {
+    res.writeHead(302, {
+      Location: '/Admin/login.html',
+      'Cache-Control': 'no-cache',
+      'X-Content-Type-Options': 'nosniff'
+    });
+    res.end();
     return;
   }
   const file = resolveFile(pathname);

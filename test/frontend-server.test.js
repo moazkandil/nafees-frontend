@@ -23,6 +23,15 @@ test('serves home, clean routes and admin login', async () => {
   }
 });
 
+test('redirects the short admin URL so relative admin assets resolve correctly', async () => {
+  const response = await fetch(`${base}/admin`, { redirect: 'manual' });
+  assert.equal(response.status, 302);
+  assert.equal(response.headers.get('location'), '/Admin/login.html');
+  const login = await fetch(`${base}${response.headers.get('location')}`);
+  assert.equal(login.status, 200);
+  assert.match(await login.text(), /admin\.css/);
+});
+
 test('returns the custom page with a real 404 status', async () => {
   const response = await fetch(`${base}/not-a-real-page`);
   assert.equal(response.status, 404);
