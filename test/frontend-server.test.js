@@ -98,3 +98,10 @@ test('admin product edit opens, identifies and focuses the populated editor', ()
   assert.match(script, /form\.elements\.name\.focus\(/);
   assert.match(script, /Editing ['"]? \+ product\.name/);
 });
+
+test('admin orders render purchased product names, quantities and prices', () => {
+  const script = require('fs').readFileSync(require('path').join(__dirname, '..', 'Admin', 'admin.js'), 'utf8');
+  assert.match(script, /o\.items \|\| \[\]/);
+  assert.match(script, /class="order-items"/);
+  assert.match(script, /Qty:/);
+});

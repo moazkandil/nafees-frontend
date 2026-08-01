@@ -113,13 +113,20 @@
     if (!target) return;
     var query = ((document.getElementById('admin-order-search') || {}).value || '').toLowerCase();
     var status = (document.getElementById('admin-order-status') || {}).value || '';
-    var list = orders.filter(function (o) { return (!query || [o.number, o.customer.fullName, o.customer.email, o.customer.phone].join(' ').toLowerCase().includes(query)) && (!status || o.status === status); });
+    var list = orders.filter(function (o) {
+      var productNames = (o.items || []).map(function (item) { return item.name; }).join(' ');
+      return (!query || [o.number, o.customer.fullName, o.customer.email, o.customer.phone, productNames].join(' ').toLowerCase().includes(query)) && (!status || o.status === status);
+    });
     target.innerHTML = list.map(function (o) {
       var options = ['Pending', 'Confirmed', 'Processing', 'Shipped', 'Delivered', 'Cancelled'].map(function (value) { return '<option' + (o.status === value ? ' selected' : '') + '>' + value + '</option>'; }).join('');
+      var itemLines = (o.items || []).map(function (item) {
+        return '<li><b>' + esc(item.name || 'Product') + '</b><span>Qty: ' + esc(item.quantity) + ' &times; ' + money(item.price) + '</span></li>';
+      }).join('');
       return '<tr><td><b>' + esc(o.number) + '</b><br><small>' + new Date(o.createdAt).toLocaleString('en-EG') + '</small></td><td>' +
-        esc(o.customer.fullName) + '<br><small>' + esc(o.customer.phone) + '</small></td><td>' + money(o.total) + '</td><td>' + esc(o.payment) +
+        esc(o.customer.fullName) + '<br><small>' + esc(o.customer.phone) + '</small></td><td><ul class="order-items">' +
+        (itemLines || '<li>No product details available</li>') + '</ul></td><td>' + money(o.total) + '</td><td>' + esc(o.payment) +
         '</td><td><select class="admin-select" data-order-status data-id="' + o._id + '">' + options + '</select></td></tr>';
-    }).join('') || '<tr><td colspan="5">No orders found.</td></tr>';
+    }).join('') || '<tr><td colspan="6">No orders found.</td></tr>';
   }
   async function renderDashboard() {
     var target = document.getElementById('dashboard-content');
